@@ -10,9 +10,8 @@ class Vector4(object):
 
 
     def __init__(self, *args):
-        """Creates a Vector3 from 3 numeric values or a list-like object
+        """Creates a Vector4 from 4 numeric values or a list-like object
         containing at least 3 values. No arguments result in a null vector.
-
         """
 
         if len(args) == 4:
@@ -537,7 +536,7 @@ class Vector4(object):
         """Calculates the length of the vector."""
 
         x, y, z, w = self._v
-        return sqrt(x*x + y*y +z*z, +w*w)
+        return sqrt(x*x + y*y + z*z + w*w)
     get_magnitude = get_length
 
     def set_length(self, new_length):
@@ -703,7 +702,7 @@ if __name__ == "__main__":
 
     print "--"
     print v1
-    print v1 + (10,20,30)
+    print v1 + (10,20,30,40)
 
     print v1('xw')
 
