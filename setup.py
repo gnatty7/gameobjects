@@ -12,7 +12,7 @@ Topic :: Games/Entertainment
 from distutils.core import setup
 from gameobjects.__init__ import __version__
 
-print "Game Objects v" +  __version__
+print("Game Objects v" +  __version__)
 
 doclines = __doc__.split("\n")
 

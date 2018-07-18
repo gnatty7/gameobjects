@@ -1,9 +1,9 @@
-import vector3
-from util import format_number
+from . import vector3
+from .util import format_number
 
 class Sphere(object):
     
-    def __init__(self, position=(0,0,0), radius= 1.):
+    def __init__(self, position=(0, 0, 0), radius= 1.):
         
         self._position = vector3.Vector3(position)
         self._radius = float(radius)
@@ -66,21 +66,21 @@ class Sphere(object):
 if __name__ == "__main__":
     
     s1 = Sphere()
-    s2 = Sphere( (1,1,1) )
+    s2 = Sphere( (1, 1, 1) )
     s3 = Sphere( radius=10 )
     s4 = eval(repr(s2))
     
-    print s1
-    print repr(s2)
-    print s2, s4
+    print(s1)
+    print(repr(s2))
+    print(s2, s4)
     
     v = vector3.Vector3(0, 1, 0)
-    print v in s1
+    print(v in s1)
     
     big = Sphere(radius=1)
     small = Sphere(position=(.8, 0, 0), radius=.2)
      
     
-    print small, big
-    print small in big
+    print(small, big)
+    print(small in big)
     

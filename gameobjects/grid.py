@@ -1,6 +1,6 @@
 
-from locals import WRAP_REPEAT, WRAP_CLAMP, WRAP_ERROR
-from util import saturate
+from .locals import WRAP_REPEAT, WRAP_CLAMP, WRAP_ERROR
+from .util import saturate
 
 class Grid(object):
 
@@ -27,8 +27,8 @@ class Grid(object):
         self.width = width
         self.height = height
 
-        self.nodes = [ [node_factory(x, y) for x in xrange(width)] \
-                                           for y in xrange(height)]
+        self.nodes = [ [node_factory(x, y) for x in range(width)] \
+                                           for y in range(height)]
 
         self._x_wrap = x_wrap
         self._y_wrap = y_wrap
@@ -134,10 +134,10 @@ class Grid(object):
 
                 ret = []
 
-                for y_index in xrange(*y_indices):
+                for y_index in range(*y_indices):
                     nodes_y = self.nodes[ wrap_y(y_index) ]
 
-                    for x_index in xrange(*x_indices):
+                    for x_index in range(*x_indices):
                         ret.append( nodes_y[ wrap_x(x_index) ] )
 
             except IndexError:
@@ -179,8 +179,8 @@ class Grid(object):
 
         node_factory = self.node_factory
 
-        self.nodes[:] = [ [node_factory(x, y) for x in xrange(width)] \
-                                              for y in xrange(height)]
+        self.nodes[:] = [ [node_factory(x, y) for x in range(width)] \
+                                              for y in range(height)]
 
 
     def get(self, coord, default=None):
@@ -224,7 +224,7 @@ class Grid(object):
         wrap_x, wrap_y = self._wrap_functions
 
         nodes = self.nodes
-        return [self.nodes[y_coord][x1:x2] for y_coord in xrange(y1, y2)]
+        return [self.nodes[y_coord][x1:x2] for y_coord in range(y1, y2)]
 
 
 
@@ -242,7 +242,7 @@ if __name__ == "__main__":
     g = Grid(Square, 100, 100, x_wrap = WRAP_REPEAT)
 
     for square in g:
-        print str(square)
+        print(str(square))
 
-    print g[10:20, 10:20]
-    print g.get_nodes((-2, 0), (5, 5))
+    print(g[10:20, 10:20])
+    print(g.get_nodes((-2, 0), (5, 5)))

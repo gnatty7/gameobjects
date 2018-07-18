@@ -1,5 +1,5 @@
 from math import sqrt
-from util import format_number
+from .util import format_number
 
 class Vector3(object):
 
@@ -14,13 +14,13 @@ class Vector3(object):
 
         """
         if len(args) == 3:
-            self._v = map(float, args[:3])
+            self._v = list(map(float, args[:3]))
             return
 
         if not args:
             self._v = [0., 0., 0.]
         elif len(args) == 1:
-            self._v = map(float, args[0][:3])
+            self._v = list(map(float, args[0][:3]))
         else:
             raise ValueError("Vector3.__init__ takes 0, 1 or 3 parameters")
 
@@ -50,7 +50,7 @@ class Vector3(object):
     @classmethod
     def from_iter(cls, iterable):
         """Creates a Vector3 from an iterable containing at least 3 values."""
-        next = iter(iterable).next
+        next = iter(iterable).__next__
         v = cls.__new__(cls, object)
         v._v = [ float(next()), float(next()), float(next()) ]
         return v
@@ -77,7 +77,7 @@ class Vector3(object):
         try:
             self._v[0] = 1.0 * x
         except:
-            raise TypeError, "Must be a number"
+            raise TypeError("Must be a number")
     x = property(_get_x, _set_x, None, "x component.")
 
     def _get_y(self):
@@ -86,7 +86,7 @@ class Vector3(object):
         try:
             self._v[1] = 1.0 * y
         except:
-            raise TypeError, "Must be a number"
+            raise TypeError("Must be a number")
     y = property(_get_y, _set_y, None, "y component.")
 
     def _get_z(self):
@@ -95,7 +95,7 @@ class Vector3(object):
         try:
             self._v[2] = 1.0 * z
         except:
-            raise TypeError, "Must be a number"
+            raise TypeError("Must be a number")
     z = property(_get_z, _set_z, None, "z component.")
 
     def _get_length(self):
@@ -175,7 +175,7 @@ class Vector3(object):
         try:
             return self._v[index]
         except IndexError:
-            raise IndexError, "There are 3 values in this object, index should be 0, 1 or 2!"
+            raise IndexError("There are 3 values in this object, index should be 0, 1 or 2!")
 
     def __setitem__(self, index, value):
         """Sets a component, given its index.
@@ -188,9 +188,9 @@ class Vector3(object):
         try:
             self._v[index] = 1.0 * value
         except IndexError:
-            raise IndexError, "There are 3 values in this object, index should be 0, 1 or 2!"
+            raise IndexError("There are 3 values in this object, index should be 0, 1 or 2!")
         except TypeError:
-            raise TypeError, "Must be a number"
+            raise TypeError("Must be a number")
 
 
     def __eq__(self, rhs):
@@ -454,7 +454,7 @@ class Vector3(object):
         return self.copy()
 
 
-    def __nonzero__(self):
+    def __bool__(self):
 
         x, y, z = self._v
         return bool(x or y or z)
@@ -663,62 +663,62 @@ if __name__ == "__main__":
 
     v1 = Vector3(2.2323, 3.43242, 1.)
 
-    print 3*v1
-    print (2, 4, 6)*v1
+    print(3*v1)
+    print((2, 4, 6)*v1)
 
-    print (1, 2, 3)+v1
-    print v1('xxxyyyzzz')
-    print v1[2]
-    print v1.z
+    print((1, 2, 3)+v1)
+    print(v1('xxxyyyzzz'))
+    print(v1[2])
+    print(v1.z)
     v1[2]=5.
-    print v1
+    print(v1)
     v2= Vector3(1.2, 5, 10)
-    print v2
+    print(v2)
     v1 += v2
-    print v1.get_length()
-    print repr(v1)
-    print v1[1]
+    print(v1.get_length())
+    print(repr(v1))
+    print(v1[1])
 
-    p1 = Vector3(1,2,3)
-    print p1
-    print repr(p1)
+    p1 = Vector3(1, 2, 3)
+    print(p1)
+    print(repr(p1))
 
     for v in p1:
-        print v
+        print(v)
 
     #print p1[6]
 
-    ptest = Vector3( [1,2,3] )
-    print ptest
+    ptest = Vector3( [1, 2, 3] )
+    print(ptest)
 
     z = Vector3()
-    print z
+    print(z)
 
     file("test.txt", "w").write( "\n".join(str(float(n)) for n in range(20)) )
     f = file("test.txt")
     v1 = Vector3.from_iter( f )
     v2 = Vector3.from_iter( f )
     v3 = Vector3.from_iter( f )
-    print v1, v2, v3
+    print(v1, v2, v3)
 
-    print "--"
-    print v1
-    print v1 + (10,20,30)
+    print("--")
+    print(v1)
+    print(v1 + (10, 20, 30))
 
-    print v1('xz')
+    print(v1('xz'))
 
-    print -v1
+    print(-v1)
 
     #print tuple(ptest)
     #p1.set( (4, 5, 6) )
     #print p1
 
-    print Vector3(10,10,30)+v1
+    print(Vector3(10, 10, 30)+v1)
 
-    print Vector3((0,0,0,1))
+    print(Vector3((0, 0, 0, 1)))
     
-    print Vector3(1, 2, 3).scale(3)
+    print(Vector3(1, 2, 3).scale(3))
     
-    print Vector3(1, 2, 3).scale((2, 4, 6))
+    print(Vector3(1, 2, 3).scale((2, 4, 6)))
     
-    print bool(v1)
+    print(bool(v1))

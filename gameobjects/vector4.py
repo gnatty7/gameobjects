@@ -1,6 +1,6 @@
 from math import sqrt
-from util import format_number
-from vector3 import Vector3
+from .util import format_number
+from .vector3 import Vector3
 
 class Vector4(object):
 
@@ -15,17 +15,17 @@ class Vector4(object):
         """
 
         if len(args) == 4:
-            self._v = map(float, args[:4])
+            self._v = list(map(float, args[:4]))
             return
 
         if not args:
             self._v = [0., 0., 0., 0.]
         elif len(args) == 1:
             if isinstance(args[0], Vector3):
-                x,y,z = args[0]
+                x, y, z = args[0]
                 self._v = [x, y, z, 0.]
             else:
-                self._v = map(float, args[0][:4])
+                self._v = list(map(float, args[0][:4]))
         else:
             raise ValueError("Vector4.__init__ takes 0, 1 or 4 parameters")
 
@@ -55,7 +55,7 @@ class Vector4(object):
     @classmethod
     def from_iter(cls, iterable):
         """Creates a Vector4 from an iterable containing at least 4 values."""
-        next = iter(iterable).next
+        next = iter(iterable).__next__
         v = cls.__new__(cls, object)
         v._v = [ float(next()), float(next()), float(next()), float(next()) ]
         return v
@@ -82,7 +82,7 @@ class Vector4(object):
         try:
             self._v[0] = 1.0 * x
         except:
-            raise TypeError, "Must be a number"
+            raise TypeError("Must be a number")
     x = property(_get_x, _set_x, None, "x component.")
 
     def _get_y(self):
@@ -91,7 +91,7 @@ class Vector4(object):
         try:
             self._v[1] = 1.0 * y
         except:
-            raise TypeError, "Must be a number"
+            raise TypeError("Must be a number")
     y = property(_get_y, _set_y, None, "y component.")
 
     def _get_z(self):
@@ -100,7 +100,7 @@ class Vector4(object):
         try:
             self._v[2] = 1.0 * z
         except:
-            raise TypeError, "Must be a number"
+            raise TypeError("Must be a number")
     z = property(_get_z, _set_z, None, "z component.")
 
     def _get_w(self):
@@ -109,7 +109,7 @@ class Vector4(object):
         try:
             self._v[3] = 1.0 * w
         except:
-            raise TypeError, "Must be a number"
+            raise TypeError("Must be a number")
     w = property(_get_w, _set_w, None, "w component.")
 
     def _get_length(self):
@@ -194,7 +194,7 @@ class Vector4(object):
         try:
             return self._v[index]
         except IndexError:
-            raise IndexError, "There are 4 values in this object, index should be 0, 1, 2 or 3!"
+            raise IndexError("There are 4 values in this object, index should be 0, 1, 2 or 3!")
 
     def __setitem__(self, index, value):
         """Sets a component, given its index.
@@ -207,9 +207,9 @@ class Vector4(object):
         try:
             self._v[index] = 1.0 * value
         except IndexError:
-            raise IndexError, "There are 4 values in this object, index should be 0, 1, 2 or 3!"
+            raise IndexError("There are 4 values in this object, index should be 0, 1, 2 or 3!")
         except TypeError:
-            raise TypeError, "Must be a number"
+            raise TypeError("Must be a number")
 
 
     def __eq__(self, rhs):
@@ -483,7 +483,7 @@ class Vector4(object):
         return self.copy()
 
 
-    def __nonzero__(self):
+    def __bool__(self):
 
         x, y, z, w = self._v
         return bool(x or y or z or w)
@@ -614,7 +614,7 @@ class Vector4(object):
 
     def get_normalised(self):
 
-        x, y, z,w = self._v
+        x, y, z, w = self._v
         l = sqrt(x*x + y*y + z*z, w*w)
         return self.from_floats(x/l, y/l, z/l, w/l)
     get_normalized = get_normalised
@@ -662,62 +662,62 @@ if __name__ == "__main__":
 
     v1 = Vector4(2.2323, 3.43242, 1., 1.)
 
-    print 3*v1
-    print (2, 4, 6, 7)*v1
+    print(3*v1)
+    print((2, 4, 6, 7)*v1)
 
-    print (1, 2, 3, 4)+v1
-    print v1('xxxyyyzzzwww')
-    print v1[2]
-    print v1.w    
+    print((1, 2, 3, 4)+v1)
+    print(v1('xxxyyyzzzwww'))
+    print(v1[2])
+    print(v1.w)    
     v1[2]=5.
-    print v1
+    print(v1)
     v2= Vector4(1.2, 5, 10, 12)
-    print v2
+    print(v2)
     v1 += v2
-    print v1.get_length()
-    print repr(v1)
-    print v1[1]
+    print(v1.get_length())
+    print(repr(v1))
+    print(v1[1])
 
-    p1 = Vector4(1,2,3,4)
-    print p1
-    print repr(p1)
+    p1 = Vector4(1, 2, 3, 4)
+    print(p1)
+    print(repr(p1))
 
     for v in p1:
-        print v
+        print(v)
 
     #print p1[6]
 
-    ptest = Vector4( [1,2,3,4] )
-    print ptest
+    ptest = Vector4( [1, 2, 3, 4] )
+    print(ptest)
 
     z = Vector4()
-    print z
+    print(z)
 
     file("test.txt", "w").write( "\n".join(str(float(n)) for n in range(20)) )
     f = file("test.txt")
     v1 = Vector4.from_iter( f )
     v2 = Vector4.from_iter( f )
     v3 = Vector4.from_iter( f )
-    print v1, v2, v3
+    print(v1, v2, v3)
 
-    print "--"
-    print v1
-    print v1 + (10,20,30,40)
+    print("--")
+    print(v1)
+    print(v1 + (10, 20, 30, 40))
 
-    print v1('xw')
+    print(v1('xw'))
 
-    print -v1
+    print(-v1)
 
     #print tuple(ptest)
     #p1.set( (4, 5, 6) )
     #print p1
 
-    print Vector4(10,10,30,40)+v1
+    print(Vector4(10, 10, 30, 40)+v1)
 
-    print Vector4((0,0,0,1,10))
+    print(Vector4((0, 0, 0, 1, 10)))
     
-    print Vector4(1, 2, 3, 4).scale(3)
+    print(Vector4(1, 2, 3, 4).scale(3))
     
-    print Vector4(1, 2, 3, 4).scale((2, 4, 6, 8))
+    print(Vector4(1, 2, 3, 4).scale((2, 4, 6, 8)))
     
-    print bool(v1)
+    print(bool(v1))

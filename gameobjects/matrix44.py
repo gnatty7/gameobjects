@@ -1,7 +1,7 @@
 
-from util import format_number
-from vector3 import Vector3
-from vector4 import Vector4
+from .util import format_number
+from .vector3 import Vector3
+from .vector4 import Vector4
 
 from math import sin, cos, tan, sqrt, pi, radians
 
@@ -82,12 +82,12 @@ class Matrix44(object):
 
 
         if not args:
-            self._m = [1.,0.,0.,0., 0.,1.,0.,0., 0.,0.,1.,0., 0.,0.,0.,1.]
+            self._m = [1., 0., 0., 0., 0., 1., 0., 0., 0., 0., 1., 0., 0., 0., 0., 1.]
             return
 
 
         elif len(args) == 4:
-            self._m = [1.,0.,0.,0., 0.,1.,0.,0., 0.,0.,1.,0., 0.,0.,0.,1.]
+            self._m = [1., 0., 0., 0., 0., 1., 0., 0., 0., 0., 1., 0., 0., 0., 0., 1.]
 
             row_0, row_1, row_2, row_3 = self._setters
             r1, r2, r3, r4 = args
@@ -115,19 +115,19 @@ class Matrix44(object):
 
     def _set_row_0(self, values):
         values = tuple(values)[:4]
-        self._m[0:len(values)] = map(float, values)
+        self._m[0:len(values)] = list(map(float, values))
 
     def _set_row_1(self, values):
         values = tuple(values)[:4]
-        self._m[4:4+len(values)] = map(float, values)
+        self._m[4:4+len(values)] = list(map(float, values))
 
     def _set_row_2(self, values):
         values = tuple(values)[:4]
-        self._m[8:8+len(values)] = map(float, values)
+        self._m[8:8+len(values)] = list(map(float, values))
 
     def _set_row_3(self, values):
         values = tuple(values)[:4]
-        self._m[12:12+len(values)] = map(float, values)
+        self._m[12:12+len(values)] = list(map(float, values))
 
     _getters = (_get_row_0, _get_row_1, _get_row_2, _get_row_3)
     _setters = (_set_row_0, _set_row_1, _set_row_2, _set_row_3)
@@ -197,7 +197,7 @@ class Matrix44(object):
         """Creates a Matrix44 from an iterable of 16 values."""
 
         m = cls.__new__(cls, object)
-        m._m = map(float, iterable)
+        m._m = list(map(float, iterable))
         if len(m._m) != 16:
             raise ValueError("Iterable must have 16 values")
         return m
@@ -367,7 +367,7 @@ class Matrix44(object):
         # Changed in release 0.0.3 so that the decimal point is always
         # line up on the columns
 
-        cols = [ map(format_number, col) for col in self.columns() ]
+        cols = [ list(map(format_number, col)) for col in self.columns() ]
 
         def decimal_pos(n):
             if '.' in n:
@@ -381,9 +381,9 @@ class Matrix44(object):
 
         max_col_lengths = [ max(len(c) for c in col) for col in cols ]
         rows = [[], [], [], []]
-        for row_no in xrange(4):
+        for row_no in range(4):
 
-            for col_no in xrange(4):
+            for col_no in range(4):
 
                 v = cols[col_no][row_no]
                 rows[row_no].append( v.ljust(max_col_lengths[col_no]) )
@@ -754,7 +754,7 @@ class Matrix44(object):
         return [ ( x * m_0 + y * m_4 + z * m_8  + m_12,
                    x * m_1 + y * m_5 + z * m_9  + m_13,
                    x * m_2 + y * m_6 + z * m_10 + m_14 )
-                   for x,y,z in points ]
+                   for x, y, z in points ]
 
 
     def transform_sequence_vec3(self, points):
@@ -768,7 +768,7 @@ class Matrix44(object):
                  ( x * m_0 + y * m_4 + z * m_8  + m_12,
                    x * m_1 + y * m_5 + z * m_9  + m_13,
                    x * m_2 + y * m_6 + z * m_10 + m_14 )
-                   for x,y,z in points ]
+                   for x, y, z in points ]
 
 
     def iter_transform_vec3(self, points):
@@ -1018,7 +1018,7 @@ class Matrix44(object):
     def as_quaternion(self):
         '''Converts a rotation matrix to a 4-element quaternion'''
         tr = self.trace() - self._m[15]
-        r0,r1,r2 = self._row0,self._row1,self._row2
+        r0, r1, r2 = self._row0, self._row1, self._row2
         if tr > 0:
             S = sqrt(tr + 1.0) * 2                    # S=4*qw 
             qw = 0.25 * S
@@ -1258,76 +1258,76 @@ def test():
     m = Matrix44.xyz_rotation(radians(45), radians(20), radians(0))
 
     #m.translate += (1, 2, 3)
-    print m.right
-    print m.right.as_vec3()
+    print(m.right)
+    print(m.right.as_vec3())
 
     n = m.copy()
 
     r = Matrix44.z_rotation(radians(32))
     m *= r
-    print m
+    print(m)
     n.fast_mul( r )
 
-    print n
+    print(n)
 
-    print "--Transpose"
+    print("--Transpose")
 
-    print m.get_transpose()
+    print(m.get_transpose())
 
-    print "--"
+    print("--")
 
-    print m.get_row(2)
+    print(m.get_row(2))
 
     m.transpose()
-    print m
+    print(m)
 
-    print
+    print()
 
     #print (10, 20, 30) + Vector3(1,2,3)
 
     m.translate = (m.translate[:3]) + Vector3(10, 20, 30)
         
 
-    print m
+    print(m)
 
-    print
+    print()
 
     v = (1., 2., 3.)
-    print v
+    print(v)
     vt = m.transform(v)
-    print vt
+    print(vt)
 
     vit = m.get_inverse().transform(vt)
 
-    print vit
+    print(vit)
 
 
-    print m.inverse_transform(vt)
-    m[1,2] = 3.
+    print(m.inverse_transform(vt))
+    m[1, 2] = 3.
 
-    print
+    print()
 
-    print m.x_axis
-    print m.translate
+    print(m.x_axis)
+    print(m.translate)
     m.translate = (1, 2, 3)
 
-    print m
+    print(m)
 
     identity = Matrix44()
     #identity.set_row(0, (1, 2, 3, 4))
-    print identity
+    print(identity)
 
     identity[3, 1] = 456
     #identity *= Matrix44.scale(20.32, 764.2323, -23)
 
-    print identity
-    print eval(repr(identity))
+    print(identity)
+    print(eval(repr(identity)))
 
-    print m
+    print(m)
 
-    print m.translate + Vector3(1, 2, 3)
+    print(m.translate + Vector3(1, 2, 3))
 
-    print m
+    print(m)
 
     m.translate = (0, 0, 0)
 
