@@ -108,23 +108,18 @@ class Vector2(object):
     #v = property(get_y, set_y, None, "v component (alias for y).")
 
     def __str__(self):
-
         x, y = self._v
-        return "(%s, %s)" % (format_number(x), format_number(y))
+        return "({:8}, {:8})".format(format_number(x), format_number(y))
 
     def __repr__(self):
-
         x, y = self._v
         return "Vector2(%s, %s)" % (x, y)
 
     def __iter__(self):
-
         return iter(self._v[:])
 
     def __len__(self):
-
         return 2
-
 
     def __getitem__(self, index):
         """Gets a component as though the vector were a list."""

@@ -1,9 +1,9 @@
 
-from .util import format_number
+from .util import format_number, r2d
 from .vector3 import Vector3
 from .vector4 import Vector4
 
-from math import sin, cos, tan, sqrt, pi, radians
+from math import sin, cos, tan, sqrt, pi, radians, atan2
 
 #import psyco
 #psyco.full()
@@ -991,6 +991,7 @@ class Matrix44(object):
         sxsy = sx*sy
         cxsy = cx*sy
 
+        # Adapted from
         # http://web.archive.org/web/20041029003853/http:/www.j3d.org/matrix_faq/matrfaq_latest.html#Q35
         #A = cos(angle_x)
         #B = sin(angle_x)
@@ -1017,6 +1018,9 @@ class Matrix44(object):
 
     def as_quaternion(self):
         '''Converts a rotation matrix to a 4-element quaternion'''
+
+        # Adapted from
+        # http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
         tr = self.trace() - self._m[15]
         r0, r1, r2 = self._row0, self._row1, self._row2
         if tr > 0:
@@ -1044,6 +1048,41 @@ class Matrix44(object):
             qy = (r1[2] + r2[1]) / S
             qz = 0.25 * S
         return Vector4(qx, qy, qz, qw)
+
+    def as_euler_angles(self, in_degrees=False):
+        """Returns the rotation matrix as euler angles"""
+
+        # Adapted from
+        # https://github.com/jzrake/glm/commit/d3313421c664db5bd1b672d39ba3faec0d430117
+        m_0,  m_1,  m_2,  _, \
+        m_4,  m_5,  m_6,  _, \
+        m_8,  m_9,  m_10, _, \
+          _,    _,     _, _ = self._m
+
+        T1 = atan2(m_9, m_10)
+        C2 = sqrt(m_0*m_0 + m_4*m_4)
+        T2 = atan2(-m_8, C2)
+        S1 = sin(T1)
+        C1 = cos(T1)
+        T3 = atan2(S1*m_2 - C1*m_1, C1*m_5 - S1*m_6)        
+
+        result = (-T1, -T2, -T3)
+        if in_degrees:
+            return tuple(map(r2d, result))
+        else:
+            return result
+
+    def as_numpy_matrix(self):
+        """Converts this matrix into an equivalent numpy matrix.
+           If numpy is not installed, returns None"""
+
+        try:
+            import numpy
+        except ImportError:
+            return None
+
+        return numpy.matrix(list(self.rows()))    
+
 
     def make_perspective_projection(self, left, right, top, bottom, near, far):
         """Makes a perspective projection Matrix44.

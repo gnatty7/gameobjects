@@ -1,10 +1,10 @@
 from math import *
 
-def format_number(n, accuracy=6):
+def format_number(n, accuracy=4):
     """Formats a number in a friendly manner
     (removes trailing zeros and unneccesary point."""
 
-    fs = "%."+str(accuracy)+"f"
+    fs = "% ."+str(accuracy)+"f"
     str_n = fs%float(n)
     if '.' in str_n:
         str_n = str_n.rstrip('0').rstrip('.')
@@ -20,7 +20,6 @@ def lerp(a, b, i):
 
 
 def range2d(range_x, range_y):
-
     """Creates a 2D range."""
 
     range_x = list(range_x)
@@ -28,7 +27,6 @@ def range2d(range_x, range_y):
 
 
 def xrange2d(range_x, range_y):
-
     """Iterates over a 2D range."""
 
     range_x = list(range_x)
@@ -49,6 +47,15 @@ def is_power_of_2(n):
 def next_power_of_2(n):
     """Returns the next power of 2 that is >= n"""
     return int(2 ** ceil(log(n, 2)))
+
+def d2r(d):
+    """Converts degrees to radians"""
+    return float(d)/180*pi
+
+def r2d(r):
+    """Converts radians to degrees"""
+    return r*180/pi
+
 
 if __name__ == "__main__":
 

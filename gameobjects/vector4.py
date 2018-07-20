@@ -165,10 +165,10 @@ class Vector4(object):
     def __str__(self):
 
         x, y, z, w = self._v
-        return "(%s, %s, %s, %s)" % (format_number(x),
-                                     format_number(y),
-                                     format_number(z),
-                                     format_number(w))
+        return "({:8}, {:8}, {:8}, {:8})".format(format_number(x),
+                                                     format_number(y),
+                                                     format_number(z),
+                                                     format_number(w))
 
 
     def __repr__(self):
