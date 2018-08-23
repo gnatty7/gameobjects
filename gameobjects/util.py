@@ -5,12 +5,9 @@ def format_number(n, accuracy=4):
     (removes trailing zeros and unneccesary point."""
 
     fs = "% ."+str(accuracy)+"f"
-    str_n = fs%float(n)
+    str_n = fs%(float(n) + 0) # convert -0 to 0
     if '.' in str_n:
         str_n = str_n.rstrip('0').rstrip('.')
-    if str_n == "-0":
-        str_n = "0"
-    #str_n = str_n.replace("-0", "0")
     return str_n
 
 
