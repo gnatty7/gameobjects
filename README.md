@@ -15,7 +15,7 @@ Original Author: Will McGugan <will@willmcgugan.com>
 ### 0.0.4
 - Added a `Vector4` class
 - Fixed some bugs in `Vector3`
-- Added a `trace` method, and `as_quanternion` method to `Matrix44`
+- Added a `trace` method, and `as_quaternion` method to `Matrix44`
 
 ### 0.0.3
 - This is the initial release not checked into this repo but available here:
